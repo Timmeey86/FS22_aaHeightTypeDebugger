@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="79">
+    <author>Farmsim Tim</author>
+    <version>1.0.0.0</version>
+    <title>
+        <en>A Height Type Debugger</en>
+        <de>A Height Type Debugger</de>
+    </title>
+
+    <description>
+        <en><![CDATA[This mod helps you to find out why there are too many height types.]]></en>
+        <de><![CDATA[Diese Mod hilft dabei, herauszufinden, warum es zu viele Height Types gibt.]]></de>
+    </description>
+
+    <iconFilename>icon_aaHeighTypeDebugger.dds</iconFilename>
+
+    <extraSourceFiles>
+        <sourceFile filename="scripts/HeightTypeDebugger.lua" />
+    </extraSourceFiles>
+</modDesc>

@@ -1,0 +1,14 @@
+{
+    "Lua.diagnostics.globals": [
+        "DensityMapHeightManager",
+        "Utils",
+        "g_densityMapHeightManager",
+        "g_currentModName",
+        "getXMLFilename",
+        "MPLoadingScreen",
+        "g_gui",
+        "g_i18n",
+        "g_currentMission",
+        "Mission00"
+    ]
+}
