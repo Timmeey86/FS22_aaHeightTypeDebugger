@@ -36,27 +36,28 @@ end)
 
 Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00Finished, function(screen)
     local maxTypes = 2^g_densityMapHeightManager.heightTypeNumChannels - 1
-    local userText = ("There are %d height types, but the map can only handle %d types.\r\nThe following files loaded height types:\r\n\r\n"):format(counter, maxTypes + 1)
-    print(">>>>>>> START HEIGHT TYPE DEBUG <<<<<<<")
-    for _, xmlFileMapping in pairs(heightTypeMapping) do
-        print("> File: " .. xmlFileMapping.xmlFile)
-        local fileCounter = 0
-        for _, data in pairs(xmlFileMapping.data) do
-            if data.alreadyExists then
-                print((">>> %s: Ignored since it already exists"):format(data.name))
-            elseif not data.failed then
-                print((">>> %s: Added on index %d"):format(data.name, data.index))
-                fileCounter = fileCounter + 1
-            else
-                print((">>> %s: Type exceeds maximum number of height types (index %d)"):format(data.name, data.index))
-                fileCounter = fileCounter + 1
-            end
-        end
-        userText = ("%s%s: %d height types\r\n\r\n"):format(userText, xmlFileMapping.xmlFile, fileCounter)
-    end
-    print(">>>>>>> END HEIGHT TYPE DEBUG <<<<<<<")
-
     if counter > maxTypes then
+        local userText = ("There are %d height types, but the map can only handle %d types.\r\nThe following files loaded height types:\r\n\r\n"):format(counter, maxTypes + 1)
+        print(">>>>>>> START HEIGHT TYPE DEBUG <<<<<<<")
+        for _, xmlFileMapping in pairs(heightTypeMapping) do
+            print("> File: " .. xmlFileMapping.xmlFile)
+            local fileCounter = 0
+            for _, data in pairs(xmlFileMapping.data) do
+                if data.alreadyExists then
+                    print((">>> %s: Ignored since it already exists"):format(data.name))
+                elseif not data.failed then
+                    print((">>> %s: Added on index %d"):format(data.name, data.index))
+                    fileCounter = fileCounter + 1
+                else
+                    print((">>> %s: Type exceeds maximum number of height types (index %d)"):format(data.name, data.index))
+                    fileCounter = fileCounter + 1
+                end
+            end
+            userText = ("%s%s: %d height types\r\n\r\n"):format(userText, xmlFileMapping.xmlFile, fileCounter)
+        end
+        userText = userText .. "The log file will have more information"
+        print(">>>>>>> END HEIGHT TYPE DEBUG <<<<<<<")
+
         g_currentMission.hud:showInGameMessage("", userText, -1, nil, nil, nil)
     end
 end)
