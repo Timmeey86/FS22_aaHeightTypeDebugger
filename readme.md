@@ -7,3 +7,4 @@ Check the "Releases" section for the most recent ZIP file.
 Example output:
 
 ![An image displaying the number of height types per mod](screenshots/image.png)
+![The same image in German](screenshots/image_de.png)]
