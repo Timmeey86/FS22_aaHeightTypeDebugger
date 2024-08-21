@@ -34,6 +34,26 @@ DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(Dens
     currentIndex = currentIndex + 1
 end)
 
+local function getModName(path)
+    if path == "data/maps/maps_densityMapHeightTypes.xml" then
+        return g_i18n:getText("base_game")
+    elseif path == "data/foliage/beetRoot/beetRoot.xml" then
+        return g_i18n:getText("premium_expansion") .. "#1"
+    elseif path == "data/foliage/carrot/carrot.xml" then
+        return g_i18n:getText("premium_expansion") .. "#2"
+    elseif path == "data/foliage/parsnip/parsnip.xml" then
+        return g_i18n:getText("premium_expansion") .. "#3"
+    elseif string.find(path, "pdlc/forestry") then
+        return g_i18n:getText("platinum_expansion")
+    elseif path:sub(1, #g_modsDirectory) == g_modsDirectory then
+        local ret = path:sub(#g_modsDirectory + 1)
+        return ret:sub(1, ret:find("/") - 1)
+    else
+        return path
+    end
+end
+
+
 Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00Finished, function(screen)
     local maxTypes = 2^g_densityMapHeightManager.heightTypeNumChannels - 1
     if counter > maxTypes then
@@ -53,9 +73,10 @@ Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00
                     fileCounter = fileCounter + 1
                 end
             end
-            userText = ("%s%s: %s\r\n\r\n"):format(userText, xmlFileMapping.xmlFile, g_i18n:getText("user_text_height_types"):format(fileCounter))
+            local modName = getModName(xmlFileMapping.xmlFile)
+            userText = ("%s%s: %s\r\n"):format(userText, modName, g_i18n:getText("user_text_height_types"):format(fileCounter))
         end
-        userText = userText .. g_i18n:getText("user_text_outro"):format(counter - maxTypes, (maxTypes + 1) * 2)
+        userText = userText .. "\r\n" .. g_i18n:getText("user_text_outro"):format(counter - maxTypes - 1, (maxTypes + 1) * 2)
         print(">>>>>>> END HEIGHT TYPE DEBUG <<<<<<<")
 
         g_currentMission.hud:showInGameMessage("", userText, -1, nil, nil, nil)

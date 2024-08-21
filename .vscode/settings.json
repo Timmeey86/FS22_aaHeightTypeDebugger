@@ -9,6 +9,7 @@
         "g_gui",
         "g_i18n",
         "g_currentMission",
-        "Mission00"
+        "Mission00",
+        "g_modsDirectory"
     ]
 }
