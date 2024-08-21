@@ -17,4 +17,23 @@
     <extraSourceFiles>
         <sourceFile filename="scripts/HeightTypeDebugger.lua" />
     </extraSourceFiles>
+
+    <l10n>
+        <text name="user_text_intro">
+            <en>There are %d height types, but the map can only handle %d types.</en>
+            <de>Es gibt %d Height Types, aber die Karte kann nur %d Typen verarbeiten.</de>
+        </text>
+        <text name="user_text_intro_two">
+            <en>The following files have registered height types:</en>
+            <de>Die folgenden Dateien haben Height Types registriert:</de>
+        </text>
+        <text name="user_text_height_types">
+            <en>%d height types</en>
+            <de>%d Height Types</de>
+        </text>
+        <text name="user_text_outro">
+            <en>You need to deactivate mods with %d height types, or modify the map to support %d Height Types.</en>
+            <de>Du musst Mods mit insgesamt %d Height Types deaktivieren, oder die Karte anpassen, sodass sie %d Height Types unterstützt.</de>
+        </text>
+    </l10n>
 </modDesc>
