@@ -29,6 +29,7 @@
         </text>
         <text name="user_text_height_types">
             <en>%d height types</en>
+            <de>%d Typen</de>
         </text>
         <text name="user_text_outro">
             <en>You need to deactivate mods with a total of at least %d height types, or modify the map to support %d Height Types.</en>
