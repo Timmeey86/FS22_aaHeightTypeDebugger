@@ -6,6 +6,10 @@ local currentIndex = 0
 
 DensityMapHeightManager.addDensityMapHeightType = Utils.prependedFunction(DensityMapHeightManager.addDensityMapHeightType, function(manager, fillTypeName, ...)
 
+    if currentXMLFile == nil then
+        currentIndex = currentIndex + 1
+        currentXMLFile = "unidentified script mod"
+    end
     local alreadyExists = manager.fillTypeNameToHeightType[fillTypeName] ~= nil
     if not heightTypeMapping[currentIndex] then
         heightTypeMapping[currentIndex] = {
@@ -34,6 +38,10 @@ DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(Dens
     currentIndex = currentIndex + 1
 end)
 
+DensityMapHeightManager.loadDensityMapHeightTypes = Utils.appendedFunction(DensityMapHeightManager.loadDensityMapHeightTypes, function(...)
+    currentXMLFile = nil
+end)
+
 local function getModName(path)
     if path == "data/maps/maps_densityMapHeightTypes.xml" then
         return g_i18n:getText("base_game")
@@ -56,8 +64,8 @@ end
 
 Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00Finished, function(screen)
     local maxTypes = 2^g_densityMapHeightManager.heightTypeNumChannels - 1
-    local userText = (g_i18n:getText("user_text_intro") .. g_i18n:getText("user_text_intro_two") .. "\r\n\r\n"):format(counter, maxTypes + 1)
     print(">>>>>>> START HEIGHT TYPE DEBUG <<<<<<<")
+    local userText = ""
     for _, xmlFileMapping in pairs(heightTypeMapping) do
         print("> File: " .. xmlFileMapping.xmlFile)
         local fileCounter = 0
@@ -75,10 +83,17 @@ Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00
         local modName = getModName(xmlFileMapping.xmlFile)
         userText = ("%s%s: %s\r\n"):format(userText, modName, g_i18n:getText("user_text_height_types"):format(fileCounter))
     end
-    userText = userText .. "\r\n" .. g_i18n:getText("user_text_outro"):format(counter - maxTypes - 1, (maxTypes + 1) * 2)
     print(">>>>>>> END HEIGHT TYPE DEBUG <<<<<<<")
 
+    local introText = ""
     if counter > maxTypes then
-        g_currentMission.hud:showInGameMessage("", userText, -1, nil, nil, nil)
+        introText = g_i18n:getText("user_text_intro")
+    else
+        introText = g_i18n:getText("user_text_intro_good")
     end
+    userText = ( introText .. g_i18n:getText("user_text_intro_two") .. "\r\n\r\n"):format(counter, maxTypes + 1) .. userText
+    if counter > maxTypes then
+        userText = userText .. "\r\n" .. g_i18n:getText("user_text_outro"):format(counter - maxTypes - 1, (maxTypes + 1) * 2)
+    end
+    g_currentMission.hud:showInGameMessage("", userText, -1, nil, nil, nil)
 end)

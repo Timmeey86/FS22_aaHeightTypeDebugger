@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="79">
     <author>Farmsim Tim</author>
-    <version>1.0.0.2</version>
+    <version>1.0.0.3</version>
     <title>
         <en>A Height Type Debugger</en>
         <de>A Height Type Debugger</de>
@@ -22,6 +22,10 @@
         <text name="user_text_intro">
             <en>There are %d height types, but the map can only handle %d types.</en>
             <de>Es gibt %d Height Types, aber die Karte kann nur %d Typen verarbeiten.</de>
+        </text>
+        <text name="user_text_good">
+            <en>There are %d height types and the map can handle %d types.</en>
+            <de>Es gibt %d Height Types und die Karte kann %d Typen verarbeiten.</de>
         </text>
         <text name="user_text_intro_two">
             <en>The following sources have registered height types:</en>
