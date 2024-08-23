@@ -31,7 +31,10 @@ DensityMapHeightManager.addDensityMapHeightType = Utils.prependedFunction(Densit
     end
 end)
 
+local numChannelsBefore = 0
+
 DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(DensityMapHeightManager.loadDensityMapHeightTypes, function(manager, xmlFile, missionInfo, baseDirectory, isBaseType)
+
     local source = "unknown source"
     if xmlFile ~= nil then
         source = getXMLFilename(xmlFile)
@@ -44,10 +47,17 @@ DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(Dens
         currentXMLFile = source
         currentIndex = currentIndex + 1
     end
+
+    print("Loading height types from " .. tostring(source))
+    numChannelsBefore = g_densityMapHeightManager.heightTypeNumChannels or 0 -- will be nil before loading base game stuff
 end)
 
 DensityMapHeightManager.loadDensityMapHeightTypes = Utils.appendedFunction(DensityMapHeightManager.loadDensityMapHeightTypes, function(...)
     currentXMLFile = nil
+
+    if g_densityMapHeightManager.heightTypeNumChannels < numChannelsBefore then
+        Logging.error("The number of density height types was decreased by the mod above")
+    end
 end)
 
 local function getModName(path)
