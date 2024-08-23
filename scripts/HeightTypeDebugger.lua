@@ -8,7 +8,9 @@ DensityMapHeightManager.addDensityMapHeightType = Utils.prependedFunction(Densit
 
     if currentXMLFile == nil then
         currentIndex = currentIndex + 1
-        currentXMLFile = "unidentified script mod"
+        currentXMLFile = "unidentified (search log for \"UNID_HT_REG\")"
+        Logging.error("UNID_HT_REG: A mod registered height types through script. The mod name should be visible in the following call stack:")
+        printCallstack()
     end
     local alreadyExists = manager.fillTypeNameToHeightType[fillTypeName] ~= nil
     if not heightTypeMapping[currentIndex] then
@@ -34,8 +36,14 @@ DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(Dens
     if xmlFile ~= nil then
         source = getXMLFilename(xmlFile)
     end
-    currentXMLFile = source
-    currentIndex = currentIndex + 1
+
+    -- Compact premium expansion into one entry
+    if source == "data/foliage/carrot/carrot.xml" or source == "data/foliage/parsnip/parsnip.xml" then
+        currentXMLFile = "data/foliage/beetRoot/beetRoot.xml"
+    else
+        currentXMLFile = source
+        currentIndex = currentIndex + 1
+    end
 end)
 
 DensityMapHeightManager.loadDensityMapHeightTypes = Utils.appendedFunction(DensityMapHeightManager.loadDensityMapHeightTypes, function(...)
@@ -46,11 +54,7 @@ local function getModName(path)
     if path == "data/maps/maps_densityMapHeightTypes.xml" then
         return g_i18n:getText("base_game")
     elseif path == "data/foliage/beetRoot/beetRoot.xml" then
-        return g_i18n:getText("premium_expansion") .. "#1"
-    elseif path == "data/foliage/carrot/carrot.xml" then
-        return g_i18n:getText("premium_expansion") .. "#2"
-    elseif path == "data/foliage/parsnip/parsnip.xml" then
-        return g_i18n:getText("premium_expansion") .. "#3"
+        return g_i18n:getText("premium_expansion")
     elseif string.find(path, "pdlc/forestry") then
         return g_i18n:getText("platinum_expansion")
     elseif path:sub(1, #g_modsDirectory) == g_modsDirectory then

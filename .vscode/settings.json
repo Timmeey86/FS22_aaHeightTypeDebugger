@@ -10,6 +10,8 @@
         "g_i18n",
         "g_currentMission",
         "Mission00",
-        "g_modsDirectory"
+        "g_modsDirectory",
+        "printCallstack",
+        "Logging"
     ]
 }
