@@ -40,7 +40,7 @@ DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(Dens
         source = getXMLFilename(xmlFile)
     end
 
-    -- Compact premium expansion into one entry
+    -- Condense premium expansion into one entry
     if source == "data/foliage/carrot/carrot.xml" or source == "data/foliage/parsnip/parsnip.xml" then
         currentXMLFile = "data/foliage/beetRoot/beetRoot.xml"
     else
@@ -52,13 +52,9 @@ DensityMapHeightManager.loadDensityMapHeightTypes = Utils.prependedFunction(Dens
     numChannelsBefore = g_densityMapHeightManager.heightTypeNumChannels or 0 -- will be nil before loading base game stuff
 end)
 
-DensityMapHeightManager.loadDensityMapHeightTypes = Utils.appendedFunction(DensityMapHeightManager.loadDensityMapHeightTypes, function(...)
-    currentXMLFile = nil
+local dummy = {}
+function dummy.fakeCallback() end
 
-    if g_densityMapHeightManager.heightTypeNumChannels < numChannelsBefore then
-        Logging.error("The number of density height types was decreased by the mod above")
-    end
-end)
 
 local function getModName(path)
     if path == "data/maps/maps_densityMapHeightTypes.xml" then
@@ -75,6 +71,41 @@ local function getModName(path)
     end
 end
 
+local incompatibleMods = {}
+DensityMapHeightManager.loadDensityMapHeightTypes = Utils.appendedFunction(DensityMapHeightManager.loadDensityMapHeightTypes, function(...)
+
+    if g_densityMapHeightManager.heightTypeNumChannels < numChannelsBefore then
+        Logging.error("The number of density height types was decreased. You can identify the responsible mod in the call stack:")
+        printCallstack()
+
+        table.insert(incompatibleMods, getModName(currentXMLFile))
+
+        -- Reset the number of channels so more mods like this one can be detected
+        -- Note: This can not be used as a workaround for such mods since height type registration will have failed already
+        g_densityMapHeightManager.heightTypeNumChannels = numChannelsBefore
+    end
+    currentXMLFile = nil
+end)
+
+DensityMapHeightManager.loadMapData = Utils.appendedFunction(DensityMapHeightManager.loadMapData, function(...)
+    if #incompatibleMods > 0 then
+        local modNames = ""
+        for i = 1, #incompatibleMods, 1 do
+            modNames = modNames .. incompatibleMods[i]
+            if i ~= #incompatibleMods then
+                modNames = modNames .. ", "
+            end
+        end
+        g_gui:showYesNoDialog({
+            title = g_i18n:getText("user_title_height_type_reduction"),
+            text = g_i18n:getText("user_text_height_type_reduction"):format(modNames),
+            callback = dummy.fakeCallback,
+            yesText = g_i18n:getText("button_continue"),
+            noText = g_i18n:getText("button_continue"),
+            target = dummy
+        })
+    end
+end)
 
 Mission00.loadMission00Finished = Utils.appendedFunction(Mission00.loadMission00Finished, function(screen)
     local maxTypes = 2^g_densityMapHeightManager.heightTypeNumChannels - 1

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="79">
     <author>Farmsim Tim</author>
-    <version>1.0.0.7</version>
+    <version>1.0.1.0</version>
     <title>
         <en>A Height Type Debugger</en>
         <de>A Height Type Debugger</de>
@@ -47,7 +47,15 @@
             <en>Platinum Expansion</en>
         </text>
         <text name="premium_expansion">
-            <de>Premium Expansion</de>
+            <en>Premium Expansion</en>
+        </text>
+        <text name="user_title_height_type_reduction">
+            <en>Reduction of the number of possible height types</en>
+            <de>Reduktion der maximalen Anzahl von Height Types</de>
+        </text>
+        <text name="user_text_height_type_reduction">
+            <en>The maximum number of height types was reduced by loading the following mods: %s. Please remove this/these mod(s).</en>
+            <de>Die maximale Anzahl von Height Types wurde durch das Laden der folgenden Mods reduziert: %s. Bitte entferne diese(n) Mod(s).</de>
         </text>
     </l10n>
 </modDesc>
